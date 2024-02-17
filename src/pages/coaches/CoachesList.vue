@@ -1,25 +1,28 @@
 <template>
+
     <section>
-        FILTER
+        <coach-filter @change-filter="setFilters"></coach-filter>
     </section>
+
     <section>
+
         <base-card>
             <div class="controls">
-            <base-button mode="outline">REFRESH</base-button>
-            <base-button link to="/register">Register As Coach</base-button>
+                <base-button mode="outline">REFRESH</base-button>
+                <base-button link to="/register">Register As Coach</base-button>
             </div>
             <div>
-            <ul v-if="hasCoaches">
-                <coach-item
-                    v-for="coach in filteredCoaches"
-                    :key="coach.id"
-                    :id="coach.id"
-                    :first-name="coach.firstName"
-                    :last-name="coach.lastName"
-                    :rate="coach.hourlyRate"
-                    :areas="coach.areas"
-                ></coach-item>
-            </ul>
+                <ul v-if="hasCoaches">
+                    <coach-item
+                        v-for="coach in filteredCoaches"
+                        :key="coach.id"
+                        :id="coach.id"
+                        :first-name="coach.firstName"
+                        :last-name="coach.lastName"
+                        :rate="coach.hourlyRate"
+                        :areas="coach.areas"
+                    ></coach-item>
+                </ul>
             <h3 v-else>No Coaches found!</h3>
             </div>
         </base-card>
@@ -28,18 +31,48 @@
 
 <script>
 import CoachItem from '../../components/coaches/CoachItem.vue';
+import CoachFilter from '../../components/coaches/CoachFilter.vue';
 
 export default {
     components: {
-        CoachItem
+        CoachItem,
+        CoachFilter
+    },
+    data() {
+        return {
+            activeFilters: {
+                frontend: true,
+                backend: true,
+                career: true
+            }
+        }
     },
     computed: {
         filteredCoaches() {
-            return this.$store.getters['coaches/coaches'];
+            const coaches =  this.$store.getters['coaches/coaches'];
+            return coaches.filter(coach => {
+
+                if (this.activeFilters.frontend && coach.areas.includes('frontend')) {
+                    return true;
+                }
+                if (this.activeFilters.backend && coach.areas.includes('backend')) {
+                    return true;
+                }
+                if (this.activeFilters.career && coach.areas.includes('career')) {
+                    return true;
+                }
+                return false;
+            });
         },
 
         hasCoaches() {
         return this.$store.getters['coaches/hasCoaches'];
+        }
+    },
+
+    methods: {
+        setFilters(updatedFilters) {
+            this.activeFilters = updatedFilters;
         }
     }
 }
