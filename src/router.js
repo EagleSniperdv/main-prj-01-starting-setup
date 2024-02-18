@@ -17,11 +17,12 @@ const router = createRouter({
         component: CoachesDetail,
         props:true,
         children: [
-            {path:'/contact/',component: ContactCoach}
+            {path:'contact',component: ContactCoach}
         ]},
         {path: '/register', component: CoachesReg},
         {path: '/requests', component: ReqRec},
         {path: '/:notFound(.*)', component: NotFound},
+        {path: '/coachcontact', component: ContactCoach}
     ]
 });
 
