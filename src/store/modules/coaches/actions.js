@@ -30,7 +30,7 @@ export default {
 
     async loadCoaches(context) {
         const response = await fetch(
-            `https://fin-prj-f24b0-default-rtdb.firebaseio.com/coaches.jso`);
+            `https://fin-prj-f24b0-default-rtdb.firebaseio.com/coaches.json`);
     
     const responseData = await response.json();
 
