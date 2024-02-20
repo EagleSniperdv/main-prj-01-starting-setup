@@ -16,7 +16,7 @@
             <div class="controls">
                 <base-button 
                 mode="outline"
-                @click="loadCoaches"
+                @click="loadCoaches(true)"
                 >REFRESH</base-button>
                 <base-button 
                 v-if="!isCoach && !isLoading"
@@ -100,11 +100,11 @@
                 this.activeFilters = updatedFilters;
             },
 
-            async loadCoaches() {
+            async loadCoaches(refresh = false) {
                 this.loading = true;
 
                 try {
-                    await this.$store.dispatch('coaches/loadCoaches');
+                    await this.$store.dispatch('coaches/loadCoaches', {forceRefresh: refresh});
                 } catch(error) {
                     this.error = error.message || 'Something went wrong';
                 }
